@@ -10,10 +10,16 @@ const app = express();
 connectDB();
 const PORT = process.env.PORT || 5001;
 
-// CORS – allow frontend (dev + prod)
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:3000",
+  "https://spec-forge-frontend.vercel.app",
+];
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
