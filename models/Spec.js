@@ -21,6 +21,7 @@ const tasksGroupSchema = new mongoose.Schema(
 
 const specSchema = new mongoose.Schema(
   {
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     title: { type: String, required: [true, "Title is required"] },
     goal: { type: String, required: [true, "Goal is required"] },
     users: { type: [String], default: [] },
@@ -50,5 +51,6 @@ const specSchema = new mongoose.Schema(
 );
 
 specSchema.index({ createdAt: -1 });
+specSchema.index({ createdBy: 1, createdAt: -1 });
 
 module.exports = mongoose.model("Spec", specSchema);

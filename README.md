@@ -29,6 +29,12 @@ npm start     # production
 
 ## Environment Variables
 
-- `PORT` – Server port (default: 5000)
+- `PORT` – Server port (default: 5001)
 - `MONGO_URI` – MongoDB connection string
+- `JWT_SECRET` – Secret for JWT signing (required in production)
+- `GROQ_API_KEY` – Optional; enables AI generation
+- `GROQ_MODEL` – Optional; default `llama-3.3-70b-versatile`
+- `GROQ_TEMPERATURE` – Optional; default 0.6
+- `GROQ_MAX_TOKENS` – Optional; default 4096
+- `GROQ_MAX_RETRIES` – Optional; default 2
 - `NODE_ENV` – `development` or `production`

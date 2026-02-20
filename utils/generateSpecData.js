@@ -1,3 +1,4 @@
+const { generateSpecWithLlm } = require("./llmService");
 
 const TEMPLATE_TASKS = {
   "Web App": {
@@ -123,9 +124,7 @@ const TEMPLATE_TASKS = {
   },
 };
 
-
 const COMPLEXITY_MULTIPLIER = { Low: 0.5, Medium: 1, High: 1.5 };
-
 
 function generateUserStories(input) {
   const users = input.users?.length ? input.users.join(", ") : "user";
@@ -140,7 +139,6 @@ function generateUserStories(input) {
   ];
 }
 
-
 function generateRisks(input) {
   const constraints = input.constraints || "";
 
@@ -153,11 +151,9 @@ function generateRisks(input) {
   ];
 }
 
-
 function toTaskObjects(tasks) {
   return tasks.map((text) => ({ text, completed: false }));
 }
-
 
 function sliceByComplexity(tasks, complexity) {
   const mult = COMPLEXITY_MULTIPLIER[complexity] ?? 1;
@@ -165,7 +161,7 @@ function sliceByComplexity(tasks, complexity) {
   return tasks.slice(0, count);
 }
 
-function generateSpecData(input) {
+function generateSpecDataFallback(input) {
   const templateType = input.templateType || "Web App";
   const complexity = input.complexity || "Medium";
   const taskSet = TEMPLATE_TASKS[templateType] ?? TEMPLATE_TASKS["Web App"];
@@ -187,6 +183,12 @@ function generateSpecData(input) {
     tasks,
     risks: generateRisks(input),
   };
+}
+
+async function generateSpecData(input) {
+  const llmSpec = await generateSpecWithLlm(input);
+  if (llmSpec) return llmSpec;
+  return generateSpecDataFallback(input);
 }
 
 module.exports = { generateSpecData };
